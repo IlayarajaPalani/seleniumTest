@@ -1,0 +1,101 @@
+angular element id with int handle with css
+enum
+whether webdriver is interface?
+constructor?
+xPath?
+Page Object Model
+access diff libraries/dependancies?
+GIT/SVN?
+
+A constructor in Java is a block of code similar to a method that's called when an instance of an object is created
+A class contains constructors that are invoked to create objects from the class blueprint. Constructor declarations look like method declarations—except that they use the name of the class and have no return type
+•	A constructor doesn’t have a return type.
+•	The name of the constructor must be the same as the name of the class.
+
+super is used to invoke parent class constructor
+
+An interface is a reference type in Java. It is similar to class. a class implements interface therby inheriting the abstract methods of the interface
+When a class implements multiple interface, its called as multiple inheritance and also if the interface extends multiple interface
+
+An abstract method is a method that is declared, but contains no implementation. Abstract classes may not be instantiated, and require subclasses to provide implementations for the abstract methods. 
+
+Polymorphism is the ability of an object to take on many forms
+Example : when salary class extends employee. We can instantiate two salary object one for salary and other can be used to map to empoyee
+Salary s = new Salary("Mohd Mohtashim", "Ambehta, UP", 3, 3600.00);
+      Employee e = new Salary("John Adams", "Boston, MA", 2, 2400.00);
+	  
+read an excel
+ fis = new FileInputStream(fileName);
+HSSFWorkbook  workBook = new HSSFWorkbook(fis);
+
+What is xPath
+XML Path for finding any element on the webpage
+XPath = //tagname[@attribute='Value'];
+<input id="txtName" class="textboxcss" tabindex="1" type="text">
+// - select current node
+tagname - Tagname like input or div or image 
+@ - Select attribute
+Attribute - Attribute name of the node like id or name 
+Value = is the path or value of the attribute
+
+CSS Selector
+CSS Selector by id,class, attribute,ID/Class & Attribute , Sub String and inner text
+Id
+css=<HTML tag><#><Value of ID attribute>
+css=input#Email”
+Class
+css=<HTML tag><.><Value of Class attribute>
+ “css=label.remember” 
+attribute
+<HTML tag><[attribute=Value of attribute]>
+“css=input[type=’submit’]”
+css=<HTML tag><[attribute^=prefix of the string]> 
+css=<HTML tag><[attribute$=sufix of the string]> 
+css=<HTML tag><[attribute*=substring of the string]> 
+
+
+Enum in java is a data type that contains fixed set of constants
+ 
+ 
+ @DataProvider
+
+    public Object[][] Authentication() throws Exception{
+
+         Object[][] testObjArray = ExcelUtils.getTableArray("D://ToolsQA//OnlineStore//src//testData//TestData.xlsx","Sheet1");
+
+         return (testObjArray);
+		 
+To handle network latency you can use driver.manage.pageloadingtime
+
+How to user Javasccript to click
+WebDriver driver; // Assigned elsewhere
+JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript("document.getElementById('gbqfb').click()");
+
+Embed Screenshot to TestNG Report
+
+File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+//The below method will save the screen shot in d drive with name "screenshot.png"
+timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()); 
+screenShotName = new File("D:\\TestingDen\\Screenshots\\"+timeStamp+".png");
+FileUtils.copyFile(scrFile, screenShotName)
+String filePath = screenShotName.toString();
+String path = "<img src=\"file://" + filePath + "\" alt=\"\"/>";
+Reporter.log(path);
+
+TestNG annotations 
+@Test
+@BeforeTest
+@AfterTest
+@BeforeMethod
+@AfterMethod
+@BeforeSuite
+@AfterSuite
+
+TestNG Listeners
+extends ITestListener or TestListenerAdapter
+OnTestStart(ITestResults tr)
+OnTestSuccess(ITestResults tr)
+OnTestFailure(ITestResults tr)
+OnTestSkipped(ITestResults tr)
+log(String methodName)
