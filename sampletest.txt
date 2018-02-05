@@ -1,0 +1,232 @@
+package amex.tp.scripts;
+
+// Description - This group is created to automated the validation of Home page access to TP for View only user
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Map;
+import java.util.zip.ZipOutputStream;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+import bsh.ParseException;
+import amex.tp.common.CreateZip;
+import amex.tp.common.DriverManager;
+import amex.tp.common.FrameworkConstants;
+import amex.tp.common.ScreenShot;
+import amex.tp.common.TP_Login;
+import amex.tp.common.LoadProperties;
+import amex.tp.common.TestcaseLookup;
+import amex.tp.common.WriteTestResult;
+import amex.tp.common.commandManager;
+
+@Test
+public class G1AddFileFlowTC012 {
+	
+	public static org.slf4j.Logger logger = LoggerFactory.getLogger(G1AddFileFlowTC012.class);
+	Map connectionmap;
+	String servername;
+	ScreenShot s;
+	CreateZip cz1;
+	String runIdFile;
+	List<String> lst;
+	WriteTestResult wtr;
+	WebDriver fdriver;
+	String filePath=FrameworkConstants.ScreenShots+"/G1AddFileFlowTC012/G1AddFileFlowTC012.zip";
+    String screenshotname;
+    int  screenshotnumber=1;
+	String loginscreenshot;
+	File folder;
+	CreateZip zipfile=null;
+	ZipOutputStream zos=null;
+	FileOutputStream fos=null;
+	int teststatus=0;
+	commandManager cmd;
+	
+	@SuppressWarnings("unchecked")
+	@Parameters({"TestCaseName","Browser"})
+	public void f(String tcname,String browser) throws InterruptedException, ParseException, Throwable{
+		
+		LoadProperties lp=new LoadProperties(FrameworkConstants.G1_Props);
+		cmd = commandManager.getInstance();
+		
+		
+		  try
+		  {
+				folder=new File(FrameworkConstants.ScreenShots+"/G1AddFileFlowTC012");
+		  
+				if (folder.mkdir()) {
+	                //     System.out.println("Directory is created!");
+						 logger.info("Group Folder Created");
+					} else {
+	            	logger.info("Directory Already Exists. Results will be added to the existing folder.");
+	               // System.out.println("Directory Already Exists!");
+					}
+	        }
+		  catch(Exception e){
+			  logger.info("Group Folder Creation Failed"); 	
+			//  System.out.println("exception is:"+ e);
+		  }
+		
+		/*  logger.info("Group Zip file Creation is in progress");
+		  try
+		  {
+		  zipfile=new CreateZip();	
+		
+		  fos=new FileOutputStream(new File(FrameworkConstants.ScreenShots+"/G1/"+"G1.zip"));
+		  zos=new ZipOutputStream(fos);
+		  }catch(IOException ie)
+		  {
+			logger.info("Zip file creation failed "+ie.getMessage());
+		  }		  
+		  */
+		  
+		try{  
+		TP_Login tp=new TP_Login(logger);		
+		connectionmap=tp.HlogintoTP(browser,zos);
+		teststatus=1;
+		fdriver = (WebDriver) connectionmap.get("fdriver");
+
+			s = new ScreenShot();
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  System.out.println("Screenshot: "+screenshotname);
+		  System.out.println(folder.getAbsolutePath());
+		  //System.out.println(fdriver.getCurrentUrl());
+		  screenshotnumber++;		  
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  //zipfile.addToZipFile(folder.getAbsolutePath()+"\\"+screenshotname+".png", zos);
+		  System.out.println("The  screen shot "+screenshotnumber+" got added");
+		  logger.info("The  screen shot "+screenshotnumber+" got added");
+		  Thread.sleep(FrameworkConstants.SleepValue);
+		  
+		  cmd.click(".//*[@id='menu']/dl[5]/dt/img", "xpath");//click on Maintain File Flow
+		  cmd.click(".//*[@id='smenu2']/a[2]/img", "xpath");//Click on Add File Flow
+		  cmd.type("fileFlowName", "name",lp.readProperty("fileflowname"));
+		  cmd.type("description", "name",lp.readProperty("description"));
+		  cmd.selectByValue("owner", "name", lp.readProperty("owner"));
+		  
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  //zipfile.addToZipFile(folder.getAbsolutePath()+"\\"+screenshotname+".png", zos);
+		  cmd.click("AddNewStepType", "name");
+		  cmd.selectByValue("stepTypeCd", "name", lp.readProperty("mail"));
+		  cmd.click("Save", "name");
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  //zipfile.addToZipFile(folder.getAbsolutePath()+"\\"+screenshotname+".png", zos);
+		  cmd.click("AddNewStepType", "name");
+		  cmd.selectByValue("stepTypeCd", "name", lp.readProperty("catalog"));
+		  cmd.click("Save", "name");
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  cmd.click("AddNewStepType", "name");
+		  cmd.selectByValue("stepTypeCd", "name", lp.readProperty("delivery"));
+		  cmd.click("Save", "name");
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  cmd.click("AddNewStepType", "name");
+		  cmd.selectByValue("stepTypeCd", "name", lp.readProperty("retrieval"));
+		  cmd.click("Save", "name");
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  cmd.click("AddNewStepType", "name");
+		  cmd.selectByValue("stepTypeCd", "name", lp.readProperty("schretrieval"));
+		  cmd.click("Save", "name");
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  cmd.click("AddNewStepType", "name");
+		  cmd.selectByValue("stepTypeCd", "name", lp.readProperty("transform"));
+		  cmd.click("Save", "name");
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  cmd.click("AddFFSave", "name");
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  String Succmsg = cmd.getContent(".//*[@id='leftmenu']/tbody/tr/td[2]/form/div[2]/table[1]/tbody/tr/td[3]/font", "xpath");
+		  if(Succmsg.equalsIgnoreCase("***File Flow added successfully*** ***Replication verification is successful***")){
+			  System.out.println("File Flow Added Successfully");
+		  }else{
+
+				  System.out.println("Add File Flow Test Failed");
+			  }
+		  cmd.click(".//*[@id='leftmenu']/tbody/tr/td[2]/form/div[2]/table/tbody/tr[3]/td[2]/input[2]", "xpath");
+		  String replstatus = cmd.getContent(".//*[@id='userdetails']/tbody/tr[2]/td[2]", "xpath");
+		  if(replstatus.equalsIgnoreCase("COMPLETED")){
+			  System.out.println("Replication is completed Successfully");
+		  }else{
+
+				  System.out.println("Replication Failed");
+			  }
+		  
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  cmd.click("submit", "name");
+		  screenshotname=tcname+"_"+screenshotnumber;
+		  screenshotnumber++;
+		  s.takeScreenShot(folder.getAbsolutePath(), screenshotname, fdriver);
+		  cmd.click(".//*[@id='menu']/dl[9]/a/img", "xpath");
+		  fdriver.switchTo().alert().accept();
+
+/*		  TestcaseLookup tl =new TestcaseLookup(logger);
+		  lst = tl.lookupTestcase(FrameworkConstants.TCLookup, "G1");
+		  LoadProperties lp1=new LoadProperties(FrameworkConstants.RunIdFile);
+		  runIdFile=(lp1.readProperty("RUNID"));
+		  wtr=new WriteTestResult();*/
+		  
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+			
+		}
+		
+		  TestcaseLookup tl =new TestcaseLookup(logger);
+		  lst = tl.lookupTestcase(FrameworkConstants.TCLookup, "G1AddFileFlowTC012");
+		  LoadProperties lp1=new LoadProperties(FrameworkConstants.RunIdFile);
+		  runIdFile=(lp1.readProperty("RUNID"));
+		  wtr=new WriteTestResult();	
+		  
+		  
+
+		if(teststatus==1)
+		{
+			for(int i=0;i<lst.size();i++)
+			{
+				System.out.println("Updating "+lst.get(i)+" status as Passed");
+				
+				wtr.writeToFile(runIdFile,"G1AddFileFlowTC012,"+ lst.get(i)+",Passed");
+			}
+		}else
+		{
+			for(int i=0;i<lst.size();i++)
+			{
+				System.out.println("Updating"+lst.get(i)+"status as Failed");
+				
+				wtr.writeToFile(runIdFile,"G1AddFileFlowTC012,"+ lst.get(i)+",Failed");
+			}
+
+		}
+		
+	}
+	
+
+}
